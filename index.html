@@ -1,161 +1,170 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원증 조회</title>
 
 <style>
-/* 기본 스타일 */
 body {
   margin: 0;
   font-family: "Noto Sans KR", sans-serif;
-  background: linear-gradient(135deg, #b2f2bb, #69db7c);
+  background: #e8f5e9;
   text-align: center;
 }
 
-/* 컨테이너 */
-.container {
-  padding: 20px;
+/* 로고 */
+.logo {
+  width: 100px;
+  margin-top: 15px;
 }
 
+/* 제목 */
 h1 {
+  font-size: 22px;
   color: white;
-  font-size: 24px;
-  margin-bottom: 5px;
+  text-shadow:
+    -1px -1px 0 #1b5e20,
+     1px -1px 0 #1b5e20,
+    -1px  1px 0 #1b5e20,
+     1px  1px 0 #1b5e20;
 }
+
 h3 {
-  color: white;
-  font-weight: 400;
-  margin-top: 0;
+  color: #2e7d32;
 }
 
-input {
-  width: 70%;
-  padding: 12px;
-  border-radius: 25px;
-  border: none;
-  margin-top: 10px;
-}
-
-button {
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: none;
-  background: #2f9e44;
-  color: white;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-/* 회원증 카드 */
-.card {
+/* 검색창 */
+.search-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 15px auto;
   width: 90%;
-  max-width: 360px; /* 모바일 최적화 */
-  margin: 20px auto;
+  max-width: 350px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 12px;
   border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+.search-box button {
+  padding: 12px 16px;
+  border-radius: 20px;
+  border: none;
+  background: #2e7d32;
+  color: white;
+}
+
+/* 카드 */
+.card {
+  position: relative;
+  width: 90%;
+  max-width: 340px;
+  margin: 20px auto;
+  border-radius: 12px;
   background: white;
   padding: 25px 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  color: #222;
-  line-height: 1.5;
-  text-align: center;
-  font-weight: 500;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border: 2px solid #2e7d32;
+  overflow: hidden;
 }
 
-/* 회원 사진 */
-.card img {
-  border-radius: 50%;
-  margin-bottom: 15px;
-  width: 120px;
-  height: 120px;
+/* 워터마크 */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: url('https://raw.githubusercontent.com/fafafadola/member-card/main/logo.png') no-repeat center;
+  background-size: contain;
+  opacity: 0.08;
+  transform: translate(-50%, -50%);
+}
+
+/* 사진 */
+.profile {
+  width: 140px;
+  height: 140px;
+  border-radius: 10px;
+  margin: 15px 0;
   object-fit: cover;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #ccc;
 }
 
-/* 회원 정보 행 */
+/* 정보 */
 .info-row {
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  font-family: monospace;
   margin-bottom: 6px;
-  font-family: monospace; /* 글자 간격 일정 */
-  font-size: 17px;
-  letter-spacing: 0.05em;
 }
 .info-label {
-  font-weight: 700;
-  color: #444;
+  font-weight: bold;
 }
 .info-value {
-  flex-grow: 1;
   text-align: right;
-  padding-left: 10px;
-  letter-spacing: normal;
-  font-weight: 600;
-  color: #222;
-  white-space: nowrap;
-  overflow: visible; /* 단체명 잘림 방지 */
-  text-overflow: clip;
   word-break: break-word;
 }
 
-/* 인증 문구 */
-.certification {
+/* 흐르는 문구 */
+.marquee {
   margin-top: 20px;
-  font-style: italic;
-  color: #2f9e44;
-  font-weight: 700;
-  font-size: 16px;
-  text-align: center;
-  line-height: 1.5;
-  white-space: pre-line; /* 줄바꿈 반영 */
-  user-select: none;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
 }
 
-/* 모바일 화면 최적화 */
-@media (max-width: 480px) {
-  .card {
-    padding: 20px 15px;
-    font-size: 15px;
-  }
-  .card img {
-    width: 100px;
-    height: 100px;
-  }
+.marquee span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: scrollText 10s linear infinite;
+  color: #1b5e20;
+  font-weight: bold;
+}
+
+@keyframes scrollText {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
 }
 </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>한강지키기 남양주지역본부</h1>
-  <h3>회원 검색</h3>
-  <input type="text" id="nameInput" placeholder="이름 입력" />
-  <br />
+
+<!-- ✅ 로고 적용 완료 -->
+<img src="https://raw.githubusercontent.com/fafafadola/member-card/main/logo.png" class="logo">
+
+<h1>한강지키기 남양주지역본부</h1>
+<h3>회원 검색</h3>
+
+<div class="search-box">
+  <input type="text" id="nameInput" placeholder="이름 입력">
   <button onclick="searchMember()">검색</button>
-  <div id="result"></div>
 </div>
 
+<div id="result"></div>
+
 <script>
-const sheetURL =
-  "https://opensheet.elk.sh/1_rbmvgM1XXrXhOnlPRvUO0XEiTHJEiw4tI9tmFv_wrU/회원DB";
+const sheetURL = "https://opensheet.elk.sh/1_rbmvgM1XXrXhOnlPRvUO0XEiTHJEiw4tI9tmFv_wrU/회원DB";
 
 let members = [];
 
 fetch(sheetURL)
-  .then((res) => res.json())
-  .then((data) => (members = data));
+.then(res => res.json())
+.then(data => members = data);
 
 function searchMember() {
   const name = document.getElementById("nameInput").value.trim();
   const result = document.getElementById("result");
 
-  const filtered = members.filter((m) => m.이름.includes(name));
+  const filtered = members.filter(m => m.이름.includes(name));
 
   if (filtered.length === 0) {
     result.innerHTML = "검색 결과 없음";
@@ -164,7 +173,7 @@ function searchMember() {
 
   if (filtered.length > 1) {
     let html = "<h4>동명이인 선택</h4>";
-    filtered.forEach((m, i) => {
+    filtered.forEach((m,i)=>{
       html += `<button onclick="showCard(${i})">${m.이름} (${m.회원번호})</button><br>`;
     });
     result.innerHTML = html;
@@ -174,24 +183,27 @@ function searchMember() {
   }
 }
 
-function showCard(i) {
+function showCard(i){
   showSingle(window.filteredMembers[i]);
 }
 
-function showSingle(m) {
-  document.getElementById(
-    "result"
-  ).innerHTML = `<div class="card" id="card">
-    <h2 style="margin-bottom:10px;">회원증</h2>
-    <img src="${m.사진URL}" alt="회원 사진" />
-    <div class="info-row"><div class="info-label">회원번호</div><div class="info-value">${m.회원번호}</div></div>
-    <div class="info-row"><div class="info-label">이름</div><div class="info-value">${m.이름}</div></div>
-    <div class="info-row"><div class="info-label">단체명</div><div class="info-value">${m.단체명}</div></div>
-    <div class="certification">
-이 사람은 한강지키기운동 회원임을 인증합니다.
+function showSingle(m){
+  document.getElementById("result").innerHTML = `
+    <div class="card">
+      <h2>회원증</h2>
+      <img src="${m.사진URL}" class="profile">
+
+      <div class="info-row"><span class="info-label">회원번호</span><span class="info-value">${m.회원번호}</span></div>
+      <div class="info-row"><span class="info-label">이름</span><span class="info-value">${m.이름}</span></div>
+      <div class="info-row"><span class="info-label">단체명</span><span class="info-value">${m.단체명}</span></div>
+
+      <div class="marquee">
+        <span>이 사람은 한강지키기운동 회원임을 인증합니다.</span>
+      </div>
     </div>
-  </div>`;
+  `;
 }
 </script>
+
 </body>
 </html>
