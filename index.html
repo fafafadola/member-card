@@ -1,137 +1,170 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>회원증 조회</title>
-
-<!-- QR코드 라이브러리 -->
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-<!-- html2canvas 라이브러리 (이미지 다운로드용) -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas"></script>
 
 <style>
 body {
-    margin: 0;
-    font-family: sans-serif;
-    background: linear-gradient(135deg, #b2f2bb, #69db7c);
-    text-align: center;
+  margin: 0;
+  font-family: "Noto Sans KR", sans-serif;
+  background: linear-gradient(135deg, #b2f2bb, #69db7c);
+  text-align: center;
 }
-
 .container {
-    padding: 20px;
+  padding: 20px;
 }
-
-h1 { color: white; font-size: 24px; margin-bottom: 5px;}
-h3 { color: white; font-weight: 400; margin-top: 0;}
-
+h1 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+h3 {
+  color: white;
+  font-weight: 400;
+  margin-top: 0;
+}
 input {
-    width: 70%;
-    padding: 12px;
-    border-radius: 25px;
-    border: none;
-    margin-top: 10px;
+  width: 70%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  margin-top: 10px;
 }
-
 button {
-    padding: 10px 15px;
-    border-radius: 20px;
-    border: none;
-    background: #2f9e44;
-    color: white;
-    margin-top: 10px;
-    cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background: #2f9e44;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
 }
-
 .card {
-    width: 320px;
-    margin: 20px auto;
-    border-radius: 20px;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 320px;
+  margin: 20px auto;
+  border-radius: 20px;
+  background: white;
+  padding: 20px 25px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  color: #222;
+  line-height: 1.5;
+  text-align: left;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.card img {
+  border-radius: 50%;
+  margin-bottom: 15px;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 }
 
-.card img {
-    border-radius: 50%;
-    margin-bottom: 10px;
+/* 회원번호, 이름, 단체명 가로 정렬 */
+.info-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-family: monospace; /* 고정폭 글꼴로 자간 맞춤 */
+  font-size: 17px;
+  letter-spacing: 0.1em;
+}
+.info-label {
+  font-weight: 700;
+  color: #444;
+}
+.info-value {
+  flex-grow: 1;
+  text-align: right;
+  padding-left: 10px;
+  letter-spacing: normal; /* 값 쪽은 너무 띄우지 않음 */
+  font-weight: 600;
+  color: #222;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 60%;
+  word-break: break-word;
+}
+
+.certification {
+  margin-top: 20px;
+  font-style: italic;
+  color: #2f9e44;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+  user-select: none;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
-    <h1>한강지키기 남양주지역본부</h1>
-    <h3>회원 검색</h3>
-
-    <input type="text" id="nameInput" placeholder="이름 입력"><br>
-    <button onclick="searchMember()">검색</button>
-
-    <div id="result"></div>
+  <h1>한강지키기 남양주지역본부</h1>
+  <h3>회원 검색</h3>
+  <input type="text" id="nameInput" placeholder="이름 입력" />
+  <br />
+  <button onclick="searchMember()">검색</button>
+  <div id="result"></div>
 </div>
 
 <script>
-// 여기 JSON 주소 적용
-const sheetURL = "https://opensheet.elk.sh/1_rbmvgM1XXrXhOnlPRvUO0XEiTHJEiw4tI9tmFv_wrU/회원DB";
+const sheetURL =
+  "https://opensheet.elk.sh/1_rbmvgM1XXrXhOnlPRvUO0XEiTHJEiw4tI9tmFv_wrU/회원DB";
 
 let members = [];
 
 fetch(sheetURL)
-    .then(res => res.json())
-    .then(data => members = data);
+  .then((res) => res.json())
+  .then((data) => (members = data));
 
 function searchMember() {
-    const name = document.getElementById("nameInput").value.trim();
-    const result = document.getElementById("result");
+  const name = document.getElementById("nameInput").value.trim();
+  const result = document.getElementById("result");
 
-    const filtered = members.filter(m => m.이름.includes(name));
+  const filtered = members.filter((m) => m.이름.includes(name));
 
-    if(filtered.length === 0) {
-        result.innerHTML = "검색 결과 없음";
-        return;
-    }
+  if (filtered.length === 0) {
+    result.innerHTML = "검색 결과 없음";
+    return;
+  }
 
-    if(filtered.length > 1) {
-        let html = "<h4>동명이인 선택</h4>";
-        filtered.forEach((m,i)=>{
-            html += `<button onclick="showCard(${i})">${m.이름} (${m.회원번호})</button><br>`;
-        });
-        result.innerHTML = html;
-        window.filteredMembers = filtered;
-    } else {
-        showSingle(filtered[0]);
-    }
-}
-
-function showCard(i){
-    showSingle(window.filteredMembers[i]);
-}
-
-function showSingle(m){
-    document.getElementById("result").innerHTML = `
-        <div class="card" id="card">
-            <h3>회원증</h3>
-            <img src="${m.사진URL}" width="100" height="100"><br>
-            회원번호: ${m.회원번호}<br>
-            이름: ${m.이름}<br>
-            단체명: ${m.단체명}<br>
-            <canvas id="qrcode"></canvas><br>
-            <button onclick="downloadCard()">저장</button>
-        </div>
-    `;
-    QRCode.toCanvas(document.getElementById('qrcode'), m.회원번호);
-}
-
-function downloadCard(){
-    html2canvas(document.getElementById("card")).then(canvas=>{
-        const link = document.createElement("a");
-        link.download = "회원증.png";
-        link.href = canvas.toDataURL();
-        link.click();
+  if (filtered.length > 1) {
+    let html = "<h4>동명이인 선택</h4>";
+    filtered.forEach((m, i) => {
+      html += `<button onclick="showCard(${i})">${m.이름} (${m.회원번호})</button><br>`;
     });
+    result.innerHTML = html;
+    window.filteredMembers = filtered;
+  } else {
+    showSingle(filtered[0]);
+  }
+}
+
+function showCard(i) {
+  showSingle(window.filteredMembers[i]);
+}
+
+function showSingle(m) {
+  document.getElementById(
+    "result"
+  ).innerHTML = `<div class="card" id="card">
+    <img src="${m.사진URL}" alt="회원 사진" />
+    <div class="info-row"><div class="info-label">회원번호</div><div class="info-value">${m.회원번호}</div></div>
+    <div class="info-row"><div class="info-label">이름</div><div class="info-value">${m.이름}</div></div>
+    <div class="info-row"><div class="info-label">단체명</div><div class="info-value">${m.단체명}</div></div>
+    <div class="certification">이 사람은 한강지키기 회원임을 인증합니다</div>
+  </div>`;
 }
 </script>
-
 </body>
 </html>
