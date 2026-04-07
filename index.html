@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원증 조회</title>
 
+<!-- ✅ Google Fonts 적용 -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
@@ -19,15 +22,17 @@ body {
   margin-top: 15px;
 }
 
-/* ✅ 제목 */
+/* 제목 */
 h1 {
   font-size: 22px;
   color: #1b5e20;
+  font-weight: 700;
 }
 
-/* ✅ 회원검색 (같은 초록색) */
+/* 회원검색 */
 h3 {
   color: #1b5e20;
+  font-weight: 700;
 }
 
 /* 검색창 */
@@ -46,6 +51,7 @@ h3 {
   padding: 12px;
   border-radius: 20px;
   border: 1px solid #ccc;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 .search-box button {
@@ -54,6 +60,8 @@ h3 {
   border: none;
   background: #2e7d32;
   color: white;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 700;
 }
 
 /* 카드 */
@@ -67,6 +75,7 @@ h3 {
   padding: 25px 20px;
   border: 2px solid #2e7d32;
   overflow: hidden;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 /* 워터마크 */
@@ -97,11 +106,11 @@ h3 {
 .info-row {
   display: flex;
   justify-content: space-between;
-  font-family: monospace;
+  font-family: "Noto Sans KR", monospace;
   margin-bottom: 6px;
 }
 .info-label {
-  font-weight: bold;
+  font-weight: 700;
 }
 .info-value {
   text-align: right;
@@ -122,7 +131,7 @@ h3 {
   padding-left: 100%;
   animation: scrollText 10s linear infinite;
   color: #1b5e20;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 @keyframes scrollText {
