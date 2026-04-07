@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>회원증 조회</title>
 
-<!-- ✅ Google Fonts 적용 -->
+<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
@@ -20,6 +20,7 @@ body {
 .logo {
   width: 100px;
   margin-top: 15px;
+  cursor: pointer;
 }
 
 /* 제목 */
@@ -143,9 +144,12 @@ h3 {
 
 <body>
 
-<img src="https://raw.githubusercontent.com/fafafadola/member-card/main/logo.png" class="logo">
+<!-- 로고 클릭 시 메인화면 -->
+<a href="index.html">
+  <img src="https://raw.githubusercontent.com/fafafadola/member-card/main/logo.png" class="logo">
+</a>
 
-<h1>한강지키기 남양주지역본부</h1>
+<h1>한강지키기운동 남양주지역본부</h1>
 <h3>회원 검색</h3>
 
 <div class="search-box">
@@ -207,6 +211,11 @@ function showSingle(m){
     </div>
   `;
 }
+
+// 뒤로가기 버튼 시 메인화면으로 이동
+window.onpopstate = function(event) {
+  window.location.href = "index.html";
+};
 </script>
 
 </body>
